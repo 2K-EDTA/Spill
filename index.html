@@ -3,87 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mythical Creatures Game</title>
-    <link rel="stylesheet" href="index.css">
+    <title>Chameleon Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <nav>
-            <a href="#" id="leave-room">← Leave Room</a>
-            <span>Game ID: bywy0</span>
-            <span class="connection-status">Connection: <span class="status-indicator"></span></span>
-        </nav>
+        <h1>The Chameleon Game</h1>
     </header>
 
-    <section class="game-container">
-        <div class="player-info">
-            <table>
-                <thead>
+    <main>
+        <div id="game">
+            <div id="players-list">
+                <h3>Players</h3>
+                <ul id="players"></ul>
+            </div>
+
+            <div id="controls">
+                <input type="text" id="username" placeholder="Enter your name">
+                <button onclick="joinGame()">Join Game</button>
+                <button onclick="startGame()">Start Game</button>
+                <button onclick="resetGame()">Reset Game</button>
+            </div>
+
+            <div id="game-board">
+                <h3>Mythical Creatures</h3>
+                <table>
                     <tr>
-                        <th>Player</th>
-                        <th>Score</th>
-                        <th>Word</th>
-                        <th>Ready</th>
-                        <th>Vote</th>
+                        <td>Cyclops</td>
+                        <td>Pegasus</td>
+                        <td>Medusa</td>
+                        <td>Sphinx</td>
                     </tr>
-                </thead>
-                <tbody>
                     <tr>
-                        <td>John</td>
-                        <td>0</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>Werewolf</td>
+                        <td>Unicorn</td>
+                        <td>Dragon</td>
+                        <td>Troll</td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
+                    <tr>
+                        <td>Loch Ness Monster</td>
+                        <td>Mermaid</td>
+                        <td>Phoenix</td>
+                        <td>Vampire</td>
+                    </tr>
+                    <tr>
+                        <td>Minotaur</td>
+                        <td>Hydra</td>
+                        <td>Yeti</td>
+                        <td>Centaur</td>
+                    </tr>
+                </table>
+            </div>
 
-        <div class="game-board">
-            <h2>Mythical Creatures</h2>
-            <table class="creature-board">
-                <tr>
-                    <td>A1: Cyclops</td>
-                    <td>B1: Pegasus</td>
-                    <td>C1: Medusa</td>
-                    <td>D1: Sphinx</td>
-                </tr>
-                <tr>
-                    <td>A2: Werewolf</td>
-                    <td>B2: Unicorn</td>
-                    <td>C2: Dragon</td>
-                    <td>D2: Troll</td>
-                </tr>
-                <tr>
-                    <td>A3: Loch Ness Monster</td>
-                    <td>B3: Mermaid</td>
-                    <td>C3: Phoenix</td>
-                    <td>D3: Vampire</td>
-                </tr>
-                <tr>
-                    <td>A4: Minotaur</td>
-                    <td>B4: Hydra</td>
-                    <td>C4: Yeti</td>
-                    <td>D4: Centaur</td>
-                </tr>
-            </table>
-        </div>
+            <div id="voting">
+                <h3>Vote for the Chameleon</h3>
+                <input type="text" id="vote" placeholder="Enter player name to vote">
+                <button onclick="submitVote()">Vote</button>
+            </div>
 
-        <div class="game-options">
-            <h3>Host Options</h3>
-            <button id="start-game">Start Game</button>
-            <button id="reset-scores">Reset Scores</button>
-
-            <div class="options">
-                <label><input type="checkbox" id="private-game"> Private Game</label>
-                <label><input type="checkbox" id="one-point"> 1 point for guessing chameleon</label>
-                <label><input type="checkbox" id="chameleon-clue"> Chameleon can see one random player's clue</label>
-                <label><input type="checkbox" id="anonymous-vote"> Anonymous Voting</label>
-                <label><input type="checkbox" id="one-min-timer"> 1 min timer when thinking of clues</label>
+            <div id="status">
+                <h3>Game Status</h3>
+                <p id="chameleon-status"></p>
+                <p id="votes-status"></p>
             </div>
         </div>
-    </section>
+    </main>
 
-    <script src="script.js"></script>
+    <script>
+        const apiUrl = 'http://localhost:5000'; // Update this with your hosted Flask URL
+
+        async function joinGame() {
+            const username = document.getElementById('username').value;
+            const response = await fetch(`${apiUrl}/join`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username })
+            });
+            const data = await response.json();
+            updatePlayersList(data.players);
+        }
+
+        async function startGame() {
+            const response = await fetch(`${apiUrl}/start`, {
+                method: 'POST'
+            });
+            const data = await response.json();
+            document.getElementById('chameleon-status').textContent = `Chameleon: ${data.chameleon}`;
+        }
+
+        async function submitVote() {
+            const username = document.getElementById('username').value;
+            const vote = document.getElementById('vote').value;
+            const response = await fetch(`${apiUrl}/vote`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, vote })
+            });
+            const data = await response.json();
+            updateVotes(data.votes);
+        }
+
+        async function resetGame() {
+            const response = await fetch(`${apiUrl}/reset`, {
+                method: 'POST'
+            });
+            document.getElementById('chameleon-status').textContent = 'Game reset!';
+            document.getElementById('votes-status').textContent = '';
+        }
+
+        async function getStatus() {
+            const response = await fetch(`${apiUrl}/status`);
+            const data = await response.json();
+            updatePlayersList(data.players);
+            updateVotes(data.votes);
+            document.getElementById('chameleon-status').textContent = data.started ? `Chameleon: ${data.chameleon}` : 'Game not started';
+        }
+
+        function updatePlayersList(players) {
+            const playersList = document.getElementById('players');
+            playersList.innerHTML = '';
+            players.forEach(player => {
+                const li = document.createElement('li');
+                li.textContent = player;
+                playersList.appendChild(li);
+            });
+        }
+
+        function updateVotes(votes) {
+            const votesStatus = document.getElementById('votes-status');
+            votesStatus.textContent = 'Votes: ' + JSON.stringify(votes);
+        }
+
+        setInterval(getStatus, 5000); // Fetch game status every 5 seconds
+    </script>
 </body>
 </html>
