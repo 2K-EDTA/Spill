@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffff99; /* Light yellow background */
+}
+
+header {
+    background-color: #fff59d; /* Yellow shade for header */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+    margin-right: 20px;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+    margin-left: 5px;
+}
+
+.game-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.player-info, .game-board, .game-options {
+    background-color: #ffffe0; /* Very light yellow */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.player-info table, .creature-board {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.player-info th, .player-info td, .creature-board td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.creature-board td {
+    background-color: #b3e5fc; /* Light blue background for creature board cells */
+}
+
+button {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.options label {
+    display: block;
+    margin: 5px 0;
+}
+
+h2, h3 {
+    text-align: center;
+    color: #455a64;
+}
+

@@ -2,16 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chameleon Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mythical Creatures Game</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <h1>Welcome to Chameleon Game</h1>
-    <form action="/game_logic" method="POST">
-        <input type="text" name="player_input" placeholder="Enter guess">
-        <button type="submit">Submit</button>
-    </form>
-    <div>
-        {{ result }}
-    </div>
+    <header>
+        <nav>
+            <a href="#" id="leave-room">← Leave Room</a>
+            <span>Game ID: bywy0</span>
+            <span class="connection-status">Connection: <span class="status-indicator"></span></span>
+        </nav>
+    </header>
+
+    <section class="game-container">
+        <div class="player-info">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Score</th>
+                        <th>Word</th>
+                        <th>Ready</th>
+                        <th>Vote</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John</td>
+                        <td>0</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="game-board">
+            <h2>Mythical Creatures</h2>
+            <table class="creature-board">
+                <tr>
+                    <td>A1: Cyclops</td>
+                    <td>B1: Pegasus</td>
+                    <td>C1: Medusa</td>
+                    <td>D1: Sphinx</td>
+                </tr>
+                <tr>
+                    <td>A2: Werewolf</td>
+                    <td>B2: Unicorn</td>
+                    <td>C2: Dragon</td>
+                    <td>D2: Troll</td>
+                </tr>
+                <tr>
+                    <td>A3: Loch Ness Monster</td>
+                    <td>B3: Mermaid</td>
+                    <td>C3: Phoenix</td>
+                    <td>D3: Vampire</td>
+                </tr>
+                <tr>
+                    <td>A4: Minotaur</td>
+                    <td>B4: Hydra</td>
+                    <td>C4: Yeti</td>
+                    <td>D4: Centaur</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="game-options">
+            <h3>Host Options</h3>
+            <button id="start-game">Start Game</button>
+            <button id="reset-scores">Reset Scores</button>
+
+            <div class="options">
+                <label><input type="checkbox" id="private-game"> Private Game</label>
+                <label><input type="checkbox" id="one-point"> 1 point for guessing chameleon</label>
+                <label><input type="checkbox" id="chameleon-clue"> Chameleon can see one random player's clue</label>
+                <label><input type="checkbox" id="anonymous-vote"> Anonymous Voting</label>
+                <label><input type="checkbox" id="one-min-timer"> 1 min timer when thinking of clues</label>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>
